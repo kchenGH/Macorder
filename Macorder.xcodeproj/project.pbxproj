@@ -1,0 +1,546 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		53CBE43E2DF7E12B000720E1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 53CBE4272DF7E127000720E1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 53CBE42E2DF7E127000720E1;
+			remoteInfo = Macorder;
+		};
+		53CBE4482DF7E12B000720E1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 53CBE4272DF7E127000720E1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 53CBE42E2DF7E127000720E1;
+			remoteInfo = Macorder;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		53CBE42F2DF7E127000720E1 /* Macorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Macorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		53CBE43D2DF7E12B000720E1 /* MacorderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacorderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		53CBE4472DF7E12B000720E1 /* MacorderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacorderUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		53CBE4312DF7E127000720E1 /* Macorder */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Macorder;
+			sourceTree = "<group>";
+		};
+		53CBE4402DF7E12B000720E1 /* MacorderTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = MacorderTests;
+			sourceTree = "<group>";
+		};
+		53CBE44A2DF7E12B000720E1 /* MacorderUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = MacorderUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		53CBE42C2DF7E127000720E1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		53CBE43A2DF7E12B000720E1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		53CBE4442DF7E12B000720E1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		53CBE4262DF7E127000720E1 = {
+			isa = PBXGroup;
+			children = (
+				53CBE4312DF7E127000720E1 /* Macorder */,
+				53CBE4402DF7E12B000720E1 /* MacorderTests */,
+				53CBE44A2DF7E12B000720E1 /* MacorderUITests */,
+				53CBE4302DF7E127000720E1 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		53CBE4302DF7E127000720E1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				53CBE42F2DF7E127000720E1 /* Macorder.app */,
+				53CBE43D2DF7E12B000720E1 /* MacorderTests.xctest */,
+				53CBE4472DF7E12B000720E1 /* MacorderUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		53CBE42E2DF7E127000720E1 /* Macorder */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 53CBE4512DF7E12B000720E1 /* Build configuration list for PBXNativeTarget "Macorder" */;
+			buildPhases = (
+				53CBE42B2DF7E127000720E1 /* Sources */,
+				53CBE42C2DF7E127000720E1 /* Frameworks */,
+				53CBE42D2DF7E127000720E1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				53CBE4312DF7E127000720E1 /* Macorder */,
+			);
+			name = Macorder;
+			packageProductDependencies = (
+			);
+			productName = Macorder;
+			productReference = 53CBE42F2DF7E127000720E1 /* Macorder.app */;
+			productType = "com.apple.product-type.application";
+		};
+		53CBE43C2DF7E12B000720E1 /* MacorderTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 53CBE4542DF7E12B000720E1 /* Build configuration list for PBXNativeTarget "MacorderTests" */;
+			buildPhases = (
+				53CBE4392DF7E12B000720E1 /* Sources */,
+				53CBE43A2DF7E12B000720E1 /* Frameworks */,
+				53CBE43B2DF7E12B000720E1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				53CBE43F2DF7E12B000720E1 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				53CBE4402DF7E12B000720E1 /* MacorderTests */,
+			);
+			name = MacorderTests;
+			packageProductDependencies = (
+			);
+			productName = MacorderTests;
+			productReference = 53CBE43D2DF7E12B000720E1 /* MacorderTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		53CBE4462DF7E12B000720E1 /* MacorderUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 53CBE4572DF7E12B000720E1 /* Build configuration list for PBXNativeTarget "MacorderUITests" */;
+			buildPhases = (
+				53CBE4432DF7E12B000720E1 /* Sources */,
+				53CBE4442DF7E12B000720E1 /* Frameworks */,
+				53CBE4452DF7E12B000720E1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				53CBE4492DF7E12B000720E1 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				53CBE44A2DF7E12B000720E1 /* MacorderUITests */,
+			);
+			name = MacorderUITests;
+			packageProductDependencies = (
+			);
+			productName = MacorderUITests;
+			productReference = 53CBE4472DF7E12B000720E1 /* MacorderUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		53CBE4272DF7E127000720E1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1640;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					53CBE42E2DF7E127000720E1 = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					53CBE43C2DF7E12B000720E1 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 53CBE42E2DF7E127000720E1;
+					};
+					53CBE4462DF7E12B000720E1 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 53CBE42E2DF7E127000720E1;
+					};
+				};
+			};
+			buildConfigurationList = 53CBE42A2DF7E127000720E1 /* Build configuration list for PBXProject "Macorder" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 53CBE4262DF7E127000720E1;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 53CBE4302DF7E127000720E1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				53CBE42E2DF7E127000720E1 /* Macorder */,
+				53CBE43C2DF7E12B000720E1 /* MacorderTests */,
+				53CBE4462DF7E12B000720E1 /* MacorderUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		53CBE42D2DF7E127000720E1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		53CBE43B2DF7E12B000720E1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		53CBE4452DF7E12B000720E1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		53CBE42B2DF7E127000720E1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		53CBE4392DF7E12B000720E1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		53CBE4432DF7E12B000720E1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		53CBE43F2DF7E12B000720E1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 53CBE42E2DF7E127000720E1 /* Macorder */;
+			targetProxy = 53CBE43E2DF7E12B000720E1 /* PBXContainerItemProxy */;
+		};
+		53CBE4492DF7E12B000720E1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 53CBE42E2DF7E127000720E1 /* Macorder */;
+			targetProxy = 53CBE4482DF7E12B000720E1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		53CBE44F2DF7E12B000720E1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		53CBE4502DF7E12B000720E1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		53CBE4522DF7E12B000720E1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Macorder/Macorder.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = kech.Macorder;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		53CBE4532DF7E12B000720E1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Macorder/Macorder.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = kech.Macorder;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		53CBE4552DF7E12B000720E1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = kech.MacorderTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Macorder.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Macorder";
+			};
+			name = Debug;
+		};
+		53CBE4562DF7E12B000720E1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = kech.MacorderTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Macorder.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Macorder";
+			};
+			name = Release;
+		};
+		53CBE4582DF7E12B000720E1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = kech.MacorderUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = Macorder;
+			};
+			name = Debug;
+		};
+		53CBE4592DF7E12B000720E1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = kech.MacorderUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = Macorder;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		53CBE42A2DF7E127000720E1 /* Build configuration list for PBXProject "Macorder" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				53CBE44F2DF7E12B000720E1 /* Debug */,
+				53CBE4502DF7E12B000720E1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		53CBE4512DF7E12B000720E1 /* Build configuration list for PBXNativeTarget "Macorder" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				53CBE4522DF7E12B000720E1 /* Debug */,
+				53CBE4532DF7E12B000720E1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		53CBE4542DF7E12B000720E1 /* Build configuration list for PBXNativeTarget "MacorderTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				53CBE4552DF7E12B000720E1 /* Debug */,
+				53CBE4562DF7E12B000720E1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		53CBE4572DF7E12B000720E1 /* Build configuration list for PBXNativeTarget "MacorderUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				53CBE4582DF7E12B000720E1 /* Debug */,
+				53CBE4592DF7E12B000720E1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 53CBE4272DF7E127000720E1 /* Project object */;
+}
