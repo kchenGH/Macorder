@@ -1,3 +1,10 @@
+//
+//  EventRecorder.swift
+//  Macorder
+//
+//  Created by Keyu Chen on 6/9/25.
+//
+
 import Foundation
 import Cocoa
 
@@ -10,7 +17,6 @@ class EventRecorder {
 
     func start() {
         guard !isRecording else { return }
-
         recordedEvents.removeAll()
         lastTimestamp = CFAbsoluteTimeGetCurrent()
 
@@ -20,20 +26,15 @@ class EventRecorder {
             (1 << CGEventType.leftMouseDown.rawValue) |
             (1 << CGEventType.rightMouseDown.rawValue)
 
-        // Create an event tap
         eventTap = CGEvent.tapCreate(
             tap: .cgSessionEventTap,
             place: .headInsertEventTap,
             options: .defaultTap,
             eventsOfInterest: mask,
             callback: { proxy, type, event, userInfo in
-                guard let userInfo = userInfo else {
-                    return Unmanaged.passRetained(event)
-                }
                 let recorder = Unmanaged<EventRecorder>
-                    .fromOpaque(userInfo)
+                    .fromOpaque(userInfo!)
                     .takeUnretainedValue()
-
                 let now = CFAbsoluteTimeGetCurrent()
                 let delta = now - recorder.lastTimestamp
                 recorder.lastTimestamp = now
@@ -45,16 +46,13 @@ class EventRecorder {
 
                 switch type {
                 case .keyDown, .keyUp:
-                    let keyCode = event.getIntegerValueField(.keyboardEventKeycode)
-                    dict["keyCode"] = Int(keyCode)
+                    dict["keyCode"] = Int(event.getIntegerValueField(.keyboardEventKeycode))
                     dict["flags"] = event.flags.rawValue
-
                 case .leftMouseDown, .rightMouseDown:
                     let loc = event.location
                     dict["x"] = loc.x
                     dict["y"] = loc.y
                     dict["flags"] = event.flags.rawValue
-
                 default:
                     break
                 }
@@ -78,7 +76,6 @@ class EventRecorder {
 
     func stop() {
         guard isRecording else { return }
-
         if let tap = eventTap, let source = runLoopSource {
             CGEvent.tapEnable(tap: tap, enable: false)
             CFRunLoopRemoveSource(CFRunLoopGetCurrent(), source, .commonModes)
@@ -92,7 +89,10 @@ class EventRecorder {
             .appendingPathComponent("Documents/macro_recording.json")
 
         do {
-            let data = try JSONSerialization.data(withJSONObject: recordedEvents, options: .prettyPrinted)
+            let data = try JSONSerialization.data(
+                withJSONObject: recordedEvents,
+                options: .prettyPrinted
+            )
             try data.write(to: fileURL)
             print("⏹ Recording stopped – saved to \(fileURL.path)")
         } catch {
@@ -100,30 +100,42 @@ class EventRecorder {
         }
     }
 
-    func playback(times: Int = 1) {
-        let fileURL = FileManager.default
-            .homeDirectoryForCurrentUser
-            .appendingPathComponent("Documents/macro_recording.json")
+    /// Save the in-memory recording to any URL
+    func saveRecording(to url: URL) throws {
+        let data = try JSONSerialization.data(
+            withJSONObject: recordedEvents,
+            options: .prettyPrinted
+        )
+        try data.write(to: url)
+    }
 
-        guard
-            let data = try? Data(contentsOf: fileURL),
-            let json = try? JSONSerialization.jsonObject(with: data),
-            let events = json as? [[String: Any]]
-        else {
-            print("⚠️ No recording found at \(fileURL.path)")
+    /// Load a recording from disk into memory
+    func loadRecording(from url: URL) throws {
+        let data = try Data(contentsOf: url)
+        guard let json = try JSONSerialization.jsonObject(with: data) as? [[String: Any]] else {
+            throw NSError(
+                domain: "EventRecorder",
+                code: -1,
+                userInfo: [NSLocalizedDescriptionKey: "Invalid macro file format"]
+            )
+        }
+        recordedEvents = json
+        print("🔄 Loaded \(recordedEvents.count) events from \(url.lastPathComponent)")
+    }
+
+    /// Play back whatever is currently in memory
+    func playback(times: Int = 1) {
+        guard !recordedEvents.isEmpty else {
+            print("⚠️ No events loaded or recorded")
             return
         }
-
-        recordedEvents = events
 
         DispatchQueue.global().async {
             for cycle in 1...times {
                 for evt in self.recordedEvents {
-                    // wait for recorded interval
                     if let delta = evt["timeDelta"] as? TimeInterval {
                         Thread.sleep(forTimeInterval: delta)
                     }
-                    // reconstruct and post the event
                     if let cgEvent = self.reconstructEvent(from: evt) {
                         cgEvent.post(tap: .cghidEventTap)
                     }
@@ -145,9 +157,11 @@ class EventRecorder {
                   let flagsRaw = dict["flags"] as? UInt64
             else { return nil }
             let isDown = (type == .keyDown)
-            let ev = CGEvent(keyboardEventSource: nil,
-                             virtualKey: CGKeyCode(keyCode),
-                             keyDown: isDown)
+            let ev = CGEvent(
+                keyboardEventSource: nil,
+                virtualKey: CGKeyCode(keyCode),
+                keyDown: isDown
+            )
             ev?.flags = CGEventFlags(rawValue: flagsRaw)
             return ev
 
@@ -157,10 +171,12 @@ class EventRecorder {
                   let flagsRaw = dict["flags"] as? UInt64
             else { return nil }
             let button: CGMouseButton = (type == .leftMouseDown) ? .left : .right
-            let ev = CGEvent(mouseEventSource: nil,
-                             mouseType: type,
-                             mouseCursorPosition: CGPoint(x: x, y: y),
-                             mouseButton: button)
+            let ev = CGEvent(
+                mouseEventSource: nil,
+                mouseType: type,
+                mouseCursorPosition: CGPoint(x: x, y: y),
+                mouseButton: button
+            )
             ev?.flags = CGEventFlags(rawValue: flagsRaw)
             return ev
 
