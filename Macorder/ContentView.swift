@@ -1,5 +1,6 @@
 import SwiftUI
 import AppKit    // for NSSavePanel / NSOpenPanel
+import UniformTypeIdentifiers
 
 struct ContentView: View {
     @State private var isRecording = false
@@ -8,7 +9,8 @@ struct ContentView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            Text("🎬 Macro Recorder").font(.largeTitle)
+            Text("🎬 Macro Recorder")
+                .font(.largeTitle)
 
             Button(isRecording ? "Stop Recording" : "Start Recording") {
                 isRecording.toggle()
@@ -26,12 +28,13 @@ struct ContentView: View {
                 }
             }
 
-            Divider().padding(.vertical, 8)
+            Divider()
+                .padding(.vertical, 8)
 
             HStack(spacing: 12) {
                 Button("💾 Save Macro…") {
                     let panel = NSSavePanel()
-                    panel.allowedFileTypes = ["json"]
+                    panel.allowedContentTypes = [UTType.json]
                     panel.nameFieldStringValue = "macro_recording.json"
                     if panel.runModal() == .OK, let url = panel.url {
                         do {
@@ -45,7 +48,7 @@ struct ContentView: View {
 
                 Button("📂 Load Macro…") {
                     let panel = NSOpenPanel()
-                    panel.allowedFileTypes = ["json"]
+                    panel.allowedContentTypes = [UTType.json]
                     panel.allowsMultipleSelection = false
                     if panel.runModal() == .OK, let url = panel.url {
                         do {
