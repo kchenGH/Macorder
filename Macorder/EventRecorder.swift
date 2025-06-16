@@ -1,187 +1,187 @@
-//
-//  EventRecorder.swift
-//  Macorder
-//
-//  Created by Keyu Chen on 6/9/25.
-//
-
 import Foundation
-import Cocoa
+import AppKit
+import Quartz  // for CGEvent
 
+/// Represents a recorded input event (keyboard or mouse)
+struct RecordedEvent: Codable {
+    enum EventType: String, Codable {
+        case keyDown, keyUp
+        case leftMouseDown, leftMouseUp
+        case rightMouseDown, rightMouseUp
+    }
+
+    let type: EventType
+    let timestamp: TimeInterval   // seconds since session start
+    let keyCode: UInt16?          // for keyboard events
+    let mouseX: Double?           // global screen X coordinate for mouse events
+    let mouseY: Double?           // global screen Y coordinate for mouse events
+}
+
+/// Records and plays back global keyboard and mouse events
 class EventRecorder {
-    private var eventTap: CFMachPort?
-    private var runLoopSource: CFRunLoopSource?
-    private var isRecording = false
-    private var recordedEvents: [[String: Any]] = []
-    private var lastTimestamp: TimeInterval = 0
+    private var eventMonitors: [Any] = []
+    private var events: [RecordedEvent] = []
+    private var sessionStartTime: TimeInterval?
 
+    /// Begin recording keyboard and mouse events
     func start() {
-        guard !isRecording else { return }
-        recordedEvents.removeAll()
-        lastTimestamp = CFAbsoluteTimeGetCurrent()
+        events.removeAll()
+        sessionStartTime = nil
 
-        let mask: CGEventMask =
-            (1 << CGEventType.keyDown.rawValue) |
-            (1 << CGEventType.keyUp.rawValue) |
-            (1 << CGEventType.leftMouseDown.rawValue) |
-            (1 << CGEventType.rightMouseDown.rawValue)
-
-        eventTap = CGEvent.tapCreate(
-            tap: .cgSessionEventTap,
-            place: .headInsertEventTap,
-            options: .defaultTap,
-            eventsOfInterest: mask,
-            callback: { proxy, type, event, userInfo in
-                let recorder = Unmanaged<EventRecorder>
-                    .fromOpaque(userInfo!)
-                    .takeUnretainedValue()
-                let now = CFAbsoluteTimeGetCurrent()
-                let delta = now - recorder.lastTimestamp
-                recorder.lastTimestamp = now
-
-                var dict: [String: Any] = [
-                    "type": type.rawValue,
-                    "timeDelta": delta
-                ]
-
-                switch type {
-                case .keyDown, .keyUp:
-                    dict["keyCode"] = Int(event.getIntegerValueField(.keyboardEventKeycode))
-                    dict["flags"] = event.flags.rawValue
-                case .leftMouseDown, .rightMouseDown:
-                    let loc = event.location
-                    dict["x"] = loc.x
-                    dict["y"] = loc.y
-                    dict["flags"] = event.flags.rawValue
-                default:
-                    break
-                }
-
-                recorder.recordedEvents.append(dict)
-                return Unmanaged.passRetained(event)
-            },
-            userInfo: UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque())
-        )
-
-        if let tap = eventTap {
-            runLoopSource = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, tap, 0)
-            CFRunLoopAddSource(CFRunLoopGetCurrent(), runLoopSource, .commonModes)
-            CGEvent.tapEnable(tap: tap, enable: true)
-            isRecording = true
-            print("🔴 Recording started")
-        } else {
-            print("⚠️ Failed to create event tap")
+        // Keyboard events
+        let keyDownMon = NSEvent.addGlobalMonitorForEvents(matching: .keyDown) { [weak self] event in
+            self?.capture(event)
         }
+        let keyUpMon = NSEvent.addGlobalMonitorForEvents(matching: .keyUp) { [weak self] event in
+            self?.capture(event)
+        }
+
+        // Mouse click events
+        let leftDownMon = NSEvent.addGlobalMonitorForEvents(matching: .leftMouseDown) { [weak self] event in
+            self?.capture(event)
+        }
+        let leftUpMon = NSEvent.addGlobalMonitorForEvents(matching: .leftMouseUp) { [weak self] event in
+            self?.capture(event)
+        }
+        let rightDownMon = NSEvent.addGlobalMonitorForEvents(matching: .rightMouseDown) { [weak self] event in
+            self?.capture(event)
+        }
+        let rightUpMon = NSEvent.addGlobalMonitorForEvents(matching: .rightMouseUp) { [weak self] event in
+            self?.capture(event)
+        }
+
+        eventMonitors = [keyDownMon, keyUpMon,
+                         leftDownMon, leftUpMon,
+                         rightDownMon, rightUpMon]
     }
 
+    /// Stop recording and remove all event monitors
     func stop() {
-        guard isRecording else { return }
-        if let tap = eventTap, let source = runLoopSource {
-            CGEvent.tapEnable(tap: tap, enable: false)
-            CFRunLoopRemoveSource(CFRunLoopGetCurrent(), source, .commonModes)
-            eventTap = nil
-            runLoopSource = nil
+        for mon in eventMonitors {
+            NSEvent.removeMonitor(mon)
         }
-        isRecording = false
+        eventMonitors.removeAll()
+    }
 
-        let fileURL = FileManager.default
-            .homeDirectoryForCurrentUser
-            .appendingPathComponent("Documents/macro_recording.json")
-
-        do {
-            let data = try JSONSerialization.data(
-                withJSONObject: recordedEvents,
-                options: .prettyPrinted
-            )
-            try data.write(to: fileURL)
-            print("⏹ Recording stopped – saved to \(fileURL.path)")
-        } catch {
-            print("⚠️ Failed to save recording: \(error)")
+    /// Play back the recorded events in sequence, preserving timing
+    func playback() {
+        guard !events.isEmpty else { return }
+        DispatchQueue.global(qos: .userInteractive).async {
+            var lastTime: TimeInterval = 0
+            for recorded in self.events {
+                let wait = recorded.timestamp - lastTime
+                if wait > 0 {
+                    Thread.sleep(forTimeInterval: wait)
+                }
+                self.post(recorded)
+                lastTime = recorded.timestamp
+            }
         }
     }
 
-    /// Save the in-memory recording to any URL
+    /// Save the recorded events to a JSON file
     func saveRecording(to url: URL) throws {
-        let data = try JSONSerialization.data(
-            withJSONObject: recordedEvents,
-            options: .prettyPrinted
-        )
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted]
+        let data = try encoder.encode(events)
         try data.write(to: url)
     }
 
-    /// Load a recording from disk into memory
+    /// Load recorded events from a JSON file
     func loadRecording(from url: URL) throws {
         let data = try Data(contentsOf: url)
-        guard let json = try JSONSerialization.jsonObject(with: data) as? [[String: Any]] else {
-            throw NSError(
-                domain: "EventRecorder",
-                code: -1,
-                userInfo: [NSLocalizedDescriptionKey: "Invalid macro file format"]
-            )
-        }
-        recordedEvents = json
-        print("🔄 Loaded \(recordedEvents.count) events from \(url.lastPathComponent)")
+        let decoder = JSONDecoder()
+        events = try decoder.decode([RecordedEvent].self, from: data)
     }
 
-    /// Play back whatever is currently in memory
-    func playback(times: Int = 1) {
-        guard !recordedEvents.isEmpty else {
-            print("⚠️ No events loaded or recorded")
+    // MARK: - Private Helpers
+
+    private func capture(_ event: NSEvent) {
+        // Initialize session start time on first event
+        if sessionStartTime == nil {
+            sessionStartTime = event.timestamp
+        }
+        guard let start = sessionStartTime else { return }
+
+        let relativeTime = event.timestamp - start
+        let type: RecordedEvent.EventType
+        var keyCode: UInt16? = nil
+        var locX: Double? = nil
+        var locY: Double? = nil
+
+        switch event.type {
+        case .keyDown:
+            type = .keyDown; keyCode = event.keyCode
+        case .keyUp:
+            type = .keyUp;   keyCode = event.keyCode
+        case .leftMouseDown:
+            type = .leftMouseDown
+        case .leftMouseUp:
+            type = .leftMouseUp
+        case .rightMouseDown:
+            type = .rightMouseDown
+        case .rightMouseUp:
+            type = .rightMouseUp
+        default:
             return
         }
 
-        DispatchQueue.global().async {
-            for cycle in 1...times {
-                for evt in self.recordedEvents {
-                    if let delta = evt["timeDelta"] as? TimeInterval {
-                        Thread.sleep(forTimeInterval: delta)
-                    }
-                    if let cgEvent = self.reconstructEvent(from: evt) {
-                        cgEvent.post(tap: .cghidEventTap)
-                    }
-                }
-                print("✅ Finished cycle \(cycle) of \(times)")
-            }
-            print("✅ All \(times) playback cycle(s) complete.")
+        // For mouse events, capture global cursor location in screen coords
+        if [.leftMouseDown, .leftMouseUp, .rightMouseDown, .rightMouseUp].contains(event.type) {
+            let mouseLoc = NSEvent.mouseLocation
+            locX = Double(mouseLoc.x)
+            locY = Double(mouseLoc.y)
         }
+
+        let recorded = RecordedEvent(
+            type: type,
+            timestamp: relativeTime,
+            keyCode: keyCode,
+            mouseX: locX,
+            mouseY: locY
+        )
+        events.append(recorded)
     }
 
-    private func reconstructEvent(from dict: [String: Any]) -> CGEvent? {
-        guard let rawType = dict["type"] as? Int,
-              let type = CGEventType(rawValue: CGEventType.RawValue(rawType))
-        else { return nil }
-
-        switch type {
+    private func post(_ recorded: RecordedEvent) {
+        switch recorded.type {
         case .keyDown, .keyUp:
-            guard let keyCode = dict["keyCode"] as? Int,
-                  let flagsRaw = dict["flags"] as? UInt64
-            else { return nil }
-            let isDown = (type == .keyDown)
-            let ev = CGEvent(
-                keyboardEventSource: nil,
-                virtualKey: CGKeyCode(keyCode),
-                keyDown: isDown
-            )
-            ev?.flags = CGEventFlags(rawValue: flagsRaw)
-            return ev
+            guard let code = recorded.keyCode else { return }
+            let src = CGEventSource(stateID: .hidSystemState)
+            if let keyEvent = CGEvent(keyboardEventSource: src,
+                                      virtualKey: code,
+                                      keyDown: recorded.type == .keyDown) {
+                keyEvent.post(tap: .cghidEventTap)
+            }
 
-        case .leftMouseDown, .rightMouseDown:
-            guard let x = dict["x"] as? CGFloat,
-                  let y = dict["y"] as? CGFloat,
-                  let flagsRaw = dict["flags"] as? UInt64
-            else { return nil }
-            let button: CGMouseButton = (type == .leftMouseDown) ? .left : .right
-            let ev = CGEvent(
-                mouseEventSource: nil,
-                mouseType: type,
-                mouseCursorPosition: CGPoint(x: x, y: y),
-                mouseButton: button
-            )
-            ev?.flags = CGEventFlags(rawValue: flagsRaw)
-            return ev
-
-        default:
-            return nil
+        case .leftMouseDown, .leftMouseUp,
+             .rightMouseDown, .rightMouseUp:
+            guard let x = recorded.mouseX, let yPts = recorded.mouseY else { return }
+            // Convert points to Quartz screen coords: flip vertical origin
+            guard let screenFrame = NSScreen.main?.frame else { return }
+            let flippedY = screenFrame.height - yPts
+            let loc = CGPoint(x: x, y: flippedY)
+            let src = CGEventSource(stateID: .hidSystemState)
+            let mouseType: CGEventType
+            let button: CGMouseButton
+            switch recorded.type {
+            case .leftMouseDown:
+                mouseType = .leftMouseDown; button = .left
+            case .leftMouseUp:
+                mouseType = .leftMouseUp;   button = .left
+            case .rightMouseDown:
+                mouseType = .rightMouseDown;button = .right
+            case .rightMouseUp:
+                mouseType = .rightMouseUp;  button = .right
+            default:
+                return
+            }
+            if let mouseEvent = CGEvent(mouseEventSource: src,
+                                        mouseType: mouseType,
+                                        mouseCursorPosition: loc,
+                                        mouseButton: button) {
+                mouseEvent.post(tap: .cghidEventTap)
+            }
         }
     }
 }
