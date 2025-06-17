@@ -8,13 +8,11 @@ Events are stored as a human-readable JSON file and can be triggered via the UI 
 ## Table of Contents
 
 - [Features](#features)  
-- [Screenshots](#screenshots)  
 - [Requirements](#requirements)  
 - [Installation](#installation)  
 - [Usage](#usage)  
 - [Configuration](#configuration)  
 - [Development](#development)  
-- [Icon Setup](#icon-setup)  
 - [License](#license)  
 
 ---

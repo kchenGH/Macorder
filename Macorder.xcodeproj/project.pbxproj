@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		53EBFDEC2DFA832A0071E5D4 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 53EBFDEB2DFA83240071E5D4 /* README.md */; };
+		539805E72E012CB40053F8B4 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 539805E62E012CB40053F8B4 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,10 +28,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		539805E62E012CB40053F8B4 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		53CBE42F2DF7E127000720E1 /* Macorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Macorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		53CBE43D2DF7E12B000720E1 /* MacorderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacorderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		53CBE4472DF7E12B000720E1 /* MacorderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacorderUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		53EBFDEB2DFA83240071E5D4 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -80,7 +80,7 @@
 		53CBE4262DF7E127000720E1 = {
 			isa = PBXGroup;
 			children = (
-				53EBFDEB2DFA83240071E5D4 /* README.md */,
+				539805E62E012CB40053F8B4 /* README.md */,
 				53CBE4312DF7E127000720E1 /* Macorder */,
 				53CBE4402DF7E12B000720E1 /* MacorderTests */,
 				53CBE44A2DF7E12B000720E1 /* MacorderUITests */,
@@ -218,7 +218,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				53EBFDEC2DFA832A0071E5D4 /* README.md in Resources */,
+				539805E72E012CB40053F8B4 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
