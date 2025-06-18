@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-# install.sh — copies the app to /Applications, fixes permissions, and clears quarantine
+# install.sh — copies the app to /Applications, self-signs, fixes permissions, and clears quarantine
 
 # Ensure root privileges
 if [ "$(id -u)" -ne 0 ]; then
@@ -23,6 +23,10 @@ fi
 echo "➡️ Copying $APP_NAME to $DEST_DIR…"
 rm -rf "$DEST_DIR/$APP_NAME"
 cp -R "$SRC_DIR" "$DEST_DIR/"
+
+# Apply an ad-hoc code signature so Gatekeeper recognizes the bundle
+echo "🔏 Applying ad-hoc signature…"
+codesign --force --deep --sign - "$DEST_DIR/$APP_NAME"
 
 # Remove quarantine attribute
 echo "🛡 Removing quarantine attributes…"
