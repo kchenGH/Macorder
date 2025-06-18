@@ -3,7 +3,7 @@
 # install.sh — copies the app to /Applications and removes quarantine flag
 set -e
 
-APP="Macro Recorder.app"
+APP="Macorder.app"
 DEST="/Applications"
 
 echo "➡️ Copying $APP to $DEST…"
