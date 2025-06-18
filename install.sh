@@ -1,12 +1,9 @@
 #!/usr/bin/env bash
 
-# install.sh — copies the app to /Applications, clears quarantine, adds Gatekeeper exception
-enable_exit_on_error() {
-  set -e
-}
-enable_exit_on_error
+# install.sh — copies the app to /Applications and removes quarantine flag
+set -e
 
-# Ensure script is run with root privileges (needed for /Applications and spctl)
+# Re-run with sudo if not root
 if [ "$(id -u)" -ne 0 ]; then
   echo "⏳ Privileged operations needed. Re-running with sudo…"
   exec sudo "$0" "$@"
@@ -21,8 +18,5 @@ cp -R "$APP" "$DEST/"
 echo "🛡  Removing quarantine attribute (bypass Gatekeeper)…"
 xattr -cr "$DEST/$APP"
 
-echo "🛡  Adding Gatekeeper exception…"
-spctl --add --label "Macorder" "$DEST/$APP"
-spctl --enable --label "Macorder"
-
-echo "✅ Installation complete! Launch Macorder from /Applications (or Spotlight)."
+echo "✅ Installation complete!"
+echo "If Gatekeeper still blocks the app, right-click (or control-click) on the app in /Applications and choose ‘Open’ to authorize it."
