@@ -9,7 +9,7 @@ if [ "$(id -u)" -ne 0 ]; then
   exec sudo "$0" "$@"
 fi
 
-APP_NAME="Macro Recorder.app"
+APP_NAME="Macorder.app"
 DEST_DIR="/Applications"
 SRC_DIR="$(pwd)/$APP_NAME"
 
