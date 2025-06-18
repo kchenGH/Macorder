@@ -12,7 +12,7 @@ if [ "$(id -u)" -ne 0 ]; then
   exec sudo "$0" "$@"
 fi
 
-APP="Macro Recorder.app"
+APP="Macorder.app"
 DEST="/Applications"
 
 echo "➡️ Copying $APP to $DEST…"
@@ -22,7 +22,7 @@ echo "🛡  Removing quarantine attribute (bypass Gatekeeper)…"
 xattr -cr "$DEST/$APP"
 
 echo "🛡  Adding Gatekeeper exception…"
-spctl --add --label "Macro Recorder" "$DEST/$APP"
-spctl --enable --label "Macro Recorder"
+spctl --add --label "Macorder" "$DEST/$APP"
+spctl --enable --label "Macorder"
 
-echo "✅ Installation complete! Launch Macro Recorder from /Applications (or Spotlight)."
+echo "✅ Installation complete! Launch Macorder from /Applications (or Spotlight)."
