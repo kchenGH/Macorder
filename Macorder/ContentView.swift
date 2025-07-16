@@ -9,7 +9,7 @@ struct ContentView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            Text("🎬 Macro Recorder").font(.largeTitle)
+            Text("🎬🎬 Macro Recorder").font(.largeTitle)
 
             Button(isRecording ? "Stop Recording" : "Start Recording") {
                 isRecording.toggle()

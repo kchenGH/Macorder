@@ -8,6 +8,7 @@ struct RecordedEvent: Codable {
         case keyDown, keyUp
         case leftMouseDown, leftMouseUp
         case rightMouseDown, rightMouseUp
+        case mouseMoved
     }
 
     let type: EventType
@@ -22,11 +23,14 @@ class EventRecorder {
     private var eventMonitors: [Any] = []
     private var events: [RecordedEvent] = []
     private var sessionStartTime: TimeInterval?
+    private var lastMousePosition: CGPoint?
+    private let movementThreshold: CGFloat = 3.0
 
     /// Begin recording keyboard and mouse events
     func start() {
         events.removeAll()
         sessionStartTime = nil
+        lastMousePosition = nil
 
         // Keyboard events
         let keyDownMon = NSEvent.addGlobalMonitorForEvents(matching: .keyDown) { [weak self] event in
@@ -50,9 +54,15 @@ class EventRecorder {
             self?.capture(event)
         }
 
+        // Mouse movement events
+        let mouseMoveMon = NSEvent.addGlobalMonitorForEvents(matching: .mouseMoved) { [weak self] event in
+            self?.capture(event)
+        }
+
         eventMonitors = [keyDownMon, keyUpMon,
                          leftDownMon, leftUpMon,
-                         rightDownMon, rightUpMon]
+                         rightDownMon, rightUpMon,
+                         mouseMoveMon]
     }
 
     /// Stop recording and remove all event monitors
@@ -103,6 +113,18 @@ class EventRecorder {
         }
         guard let start = sessionStartTime else { return }
 
+        // Skip small mouse movements
+        if event.type == .mouseMoved {
+            let currentPosition = NSEvent.mouseLocation
+            if let lastPos = lastMousePosition {
+                let distance = hypot(currentPosition.x - lastPos.x, currentPosition.y - lastPos.y)
+                if distance < movementThreshold {
+                    return
+                }
+            }
+            lastMousePosition = currentPosition
+        }
+
         let relativeTime = event.timestamp - start
         let type: RecordedEvent.EventType
         var keyCode: UInt16? = nil
@@ -122,12 +144,14 @@ class EventRecorder {
             type = .rightMouseDown
         case .rightMouseUp:
             type = .rightMouseUp
+        case .mouseMoved:
+            type = .mouseMoved
         default:
             return
         }
 
         // For mouse events, capture global cursor location in screen coords
-        if [.leftMouseDown, .leftMouseUp, .rightMouseDown, .rightMouseUp].contains(event.type) {
+        if [.leftMouseDown, .leftMouseUp, .rightMouseDown, .rightMouseUp, .mouseMoved].contains(event.type) {
             let mouseLoc = NSEvent.mouseLocation
             locX = Double(mouseLoc.x)
             locY = Double(mouseLoc.y)
@@ -157,7 +181,6 @@ class EventRecorder {
         case .leftMouseDown, .leftMouseUp,
              .rightMouseDown, .rightMouseUp:
             guard let x = recorded.mouseX, let yPts = recorded.mouseY else { return }
-            // Convert points to Quartz screen coords: flip vertical origin
             guard let screenFrame = NSScreen.main?.frame else { return }
             let flippedY = screenFrame.height - yPts
             let loc = CGPoint(x: x, y: flippedY)
@@ -181,6 +204,20 @@ class EventRecorder {
                                         mouseCursorPosition: loc,
                                         mouseButton: button) {
                 mouseEvent.post(tap: .cghidEventTap)
+            }
+            
+        case .mouseMoved:
+            guard let x = recorded.mouseX, let yPts = recorded.mouseY else { return }
+            guard let screenFrame = NSScreen.main?.frame else { return }
+            let flippedY = screenFrame.height - yPts
+            let loc = CGPoint(x: x, y: flippedY)
+            let src = CGEventSource(stateID: .hidSystemState)
+            
+            if let moveEvent = CGEvent(mouseEventSource: src,
+                                      mouseType: .mouseMoved,
+                                      mouseCursorPosition: loc,
+                                      mouseButton: .left) {
+                moveEvent.post(tap: .cghidEventTap)
             }
         }
     }

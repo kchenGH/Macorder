@@ -35,13 +35,13 @@ class HotkeyManager {
             return noErr
         }, 1, eventSpec, nil, nil)
         
-        // Register ⌃⌘R
+        // Register ⌃⌃⌘⌘R
         RegisterEventHotKey(UInt32(kVK_ANSI_R), UInt32(cmdKey | controlKey), recordHotKeyID, GetApplicationEventTarget(), 0, &recordHotKeyRef)
         
-        // Register ⌃⌘P
+        // Register ⌃⌃⌘⌘P
         RegisterEventHotKey(UInt32(kVK_ANSI_P), UInt32(cmdKey | controlKey), playHotKeyID, GetApplicationEventTarget(), 0, &playHotKeyRef)
         
-        print("🔑 Hotkeys registered with Carbon")
+        print("🔑🔑 Hotkeys registered with Carbon")
     }
     
     func stopMonitoring() {

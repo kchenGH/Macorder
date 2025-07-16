@@ -5,6 +5,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let hotkeyManager = HotkeyManager.shared
     var isRecording = false
     var isPlaying = false
+    
     func applicationDidFinishLaunching(_ notification: Notification) {
         hotkeyManager.onToggleRecord = {
             self.isRecording.toggle()
@@ -20,7 +21,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         
         hotkeyManager.startMonitoring()
-        print("🚀 Hotkeys ready: ⌃⌘R = record, ⌃⌘P = playback")
+        print("🚀🚀 Hotkeys ready: ⌃⌃⌘⌘R = record, ⌃⌃⌘⌘P = playback")
     }
     
     func applicationWillTerminate(_ notification: Notification) {
