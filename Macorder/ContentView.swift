@@ -1,23 +1,30 @@
 import SwiftUI
-import AppKit    // for NSSavePanel / NSOpenPanel
+import AppKit
 
 struct ContentView: View {
     @State private var isRecording = false
     @State private var loopCountText = "1"
     @State private var alwaysOnTop = false
-    private let recorder = EventRecorder()
+    @EnvironmentObject var recorder: EventRecorder
 
     var body: some View {
         VStack(spacing: 16) {
-            Text("🎬🎬 Macro Recorder").font(.largeTitle)
+            Text("🎬 Macorder").font(.largeTitle)
 
-            Button(isRecording ? "Stop Recording" : "Start Recording") {
-                isRecording.toggle()
-                isRecording ? recorder.start() : recorder.stop()
+            HStack(spacing: 8) {
+                Button(isRecording ? "Stop Recording (^⌘R)" : "Start Recording (^⌘R)") {
+                    isRecording.toggle()
+                    isRecording ? recorder.start() : recorder.stop()
+                }
+                .keyboardShortcut("r", modifiers: [.control, .command])
             }
 
-            Button("Playback") {
-                recorder.playback()
+            HStack(spacing: 8) {
+                Button("Playback (^⌘P)") {
+                    let loopCount = Int(loopCountText) ?? 1
+                    recorder.playback(loopCount: max(1, loopCount))
+                }
+                .keyboardShortcut("p", modifiers: [.control, .command])
             }
 
             HStack {
@@ -25,19 +32,17 @@ struct ContentView: View {
                 TextField("", text: $loopCountText)
                     .frame(width: 50)
                     .multilineTextAlignment(.center)
+                    .onChange(of: loopCountText) { newValue in
+                        loopCountText = newValue.filter { "0123456789".contains($0) }
+                    }
             }
 
             Toggle("Always On Top", isOn: $alwaysOnTop)
                 .onChange(of: alwaysOnTop) { newValue in
-                    if newValue {
-                        setAlwaysOnTop(true)
-                    } else {
-                        setAlwaysOnTop(false)
-                    }
+                    setAlwaysOnTop(newValue)
                 }
 
             HStack {
-                // Save Recording with error handling
                 Button("Save Recording") {
                     let panel = NSSavePanel()
                     panel.allowedFileTypes = ["json"]
@@ -53,7 +58,6 @@ struct ContentView: View {
                     }
                 }
 
-                // Load Recording with error handling
                 Button("Load Recording") {
                     let panel = NSOpenPanel()
                     panel.allowedFileTypes = ["json"]

@@ -19,9 +19,9 @@ class HotkeyManager {
         InstallEventHandler(GetApplicationEventTarget(), { (nextHandler, theEvent, userData) -> OSStatus in
             var hotKeyID = EventHotKeyID()
             GetEventParameter(theEvent, EventParamName(kEventParamDirectObject),
-                              EventParamType(typeEventHotKeyID),
-                              nil, MemoryLayout.size(ofValue: hotKeyID),
-                              nil, &hotKeyID)
+                            EventParamType(typeEventHotKeyID),
+                            nil, MemoryLayout.size(ofValue: hotKeyID),
+                            nil, &hotKeyID)
             
             switch hotKeyID.id {
             case 1:
@@ -35,10 +35,8 @@ class HotkeyManager {
             return noErr
         }, 1, eventSpec, nil, nil)
         
-        // Register ⌃⌃⌘⌘R
         RegisterEventHotKey(UInt32(kVK_ANSI_R), UInt32(cmdKey | controlKey), recordHotKeyID, GetApplicationEventTarget(), 0, &recordHotKeyRef)
         
-        // Register ⌃⌃⌘⌘P
         RegisterEventHotKey(UInt32(kVK_ANSI_P), UInt32(cmdKey | controlKey), playHotKeyID, GetApplicationEventTarget(), 0, &playHotKeyRef)
         
         print("🔑🔑 Hotkeys registered with Carbon")
@@ -53,7 +51,6 @@ class HotkeyManager {
         }
     }
     
-    // Singleton for EventHandler access
     static let shared = HotkeyManager()
 }
 
