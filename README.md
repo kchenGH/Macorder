@@ -1,4 +1,4 @@
-# Macro Recorder for macOS
+# Macro Recorder for macOS - NOW WORKING FOR EVERYTHING
 
 **A lightweight SwiftUI app that records and plays back keyboard & mouse events on your Mac.**  
 Events are stored as a human-readable JSON file and can be triggered via the UI or global hot-keys.
