@@ -17,6 +17,14 @@ Events are stored as a human-readable JSON file and can be triggered via the UI 
 
 ---
 
+## Installation
+
+1. Download the .zip file under Code
+2. Unzip the Macorder.zip inside the .zip file
+3. Run the app. If it says unidentified developer or such, go to Privacy and Security, scroll down and Open Anyway
+
+---
+
 ## Usage
 
 1. Grant the app **Accessibility** & **Input Monitoring** permissions when prompted.  
@@ -66,14 +74,6 @@ Events are stored as a human-readable JSON file and can be triggered via the UI 
 - **macOS** 10.15 Catalina or later  
 - **Xcode** 13 or later  
 - **Swift** 5.5+ (uses `async`/`await` for timing)  
-
----
-
-## Installation
-
-1. Download the .zip file under Code
-2. Unzip the Macorder.app.zip inside the .zip file
-3. Run the app. If it says unidentified developer or such, go to Privacy and Security, scroll down and Open Anyway
 
 ---
 
