@@ -38,8 +38,6 @@ class HotkeyManager {
         RegisterEventHotKey(UInt32(kVK_ANSI_R), UInt32(cmdKey | controlKey), recordHotKeyID, GetApplicationEventTarget(), 0, &recordHotKeyRef)
         
         RegisterEventHotKey(UInt32(kVK_ANSI_P), UInt32(cmdKey | controlKey), playHotKeyID, GetApplicationEventTarget(), 0, &playHotKeyRef)
-        
-        print("🔑🔑 Hotkeys registered with Carbon")
     }
     
     func stopMonitoring() {

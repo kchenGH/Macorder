@@ -20,16 +20,14 @@ struct RecordedEvent: Codable {
 class EventRecorder: ObservableObject {
     private var eventMonitors: [Any] = []
     @Published private(set) var events: [RecordedEvent] = []
+    @Published private(set) var isRecording = false
+    @Published private(set) var isPlaying = false
     private var sessionStartTime: TimeInterval?
     private var lastMousePosition: CGPoint?
     private let movementThreshold: CGFloat = 3.0
-    private var isPlaying = false
-    
-    var isRecording: Bool {
-        return !eventMonitors.isEmpty
-    }
 
     func start() {
+        guard !isRecording else { return }
         events.removeAll()
         sessionStartTime = nil
         lastMousePosition = nil
@@ -63,54 +61,16 @@ class EventRecorder: ObservableObject {
                         rightDownMon, rightUpMon,
                         mouseMoveMon]
         
-        objectWillChange.send()
+        isRecording = true
     }
 
     func stop() {
+        guard isRecording else { return }
         for mon in eventMonitors {
             NSEvent.removeMonitor(mon)
         }
         eventMonitors.removeAll()
-        objectWillChange.send()
-    }
-
-    func playback(loopCount: Int = 1) {
-        guard !events.isEmpty else { return }
-        guard !isPlaying else { return }
-        isPlaying = true
-        
-        DispatchQueue.global(qos: .userInteractive).async { [weak self] in
-            guard let self = self else { return }
-            
-            for i in 0..<loopCount {
-                print("Playing back loop \(i + 1)/\(loopCount)")
-                var lastTime: TimeInterval = 0
-                for recorded in self.events {
-                    let wait = recorded.timestamp - lastTime
-                    if wait > 0 {
-                        Thread.sleep(forTimeInterval: wait)
-                    }
-                    self.post(recorded)
-                    lastTime = recorded.timestamp
-                }
-            }
-            
-            self.isPlaying = false
-        }
-    }
-
-    func saveRecording(to url: URL) throws {
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = [.prettyPrinted]
-        let data = try encoder.encode(events)
-        try data.write(to: url)
-    }
-
-    func loadRecording(from url: URL) throws {
-        let data = try Data(contentsOf: url)
-        let decoder = JSONDecoder()
-        events = try decoder.decode([RecordedEvent].self, from: data)
-        objectWillChange.send()
+        isRecording = false
     }
 
     private func capture(_ event: NSEvent) {
@@ -161,7 +121,33 @@ class EventRecorder: ObservableObject {
             mouseY: locY
         )
         events.append(recorded)
-        objectWillChange.send()
+    }
+
+    func playback(loopCount: Int = 1) {
+        guard !events.isEmpty else { return }
+        guard !isPlaying else { return }
+        isPlaying = true
+        
+        DispatchQueue.global(qos: .userInteractive).async { [weak self] in
+            guard let self = self else { return }
+            
+            for i in 0..<loopCount {
+                print("Playing back loop \(i + 1)/\(loopCount)")
+                var lastTime: TimeInterval = 0
+                for recorded in self.events {
+                    let wait = recorded.timestamp - lastTime
+                    if wait > 0 {
+                        Thread.sleep(forTimeInterval: wait)
+                    }
+                    self.post(recorded)
+                    lastTime = recorded.timestamp
+                }
+            }
+            
+            DispatchQueue.main.async {
+                self.isPlaying = false
+            }
+        }
     }
 
     private func post(_ recorded: RecordedEvent) {
@@ -212,5 +198,18 @@ class EventRecorder: ObservableObject {
                 moveEvent.post(tap: .cghidEventTap)
             }
         }
+    }
+
+    func saveRecording(to url: URL) throws {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted]
+        let data = try encoder.encode(events)
+        try data.write(to: url)
+    }
+
+    func loadRecording(from url: URL) throws {
+        let data = try Data(contentsOf: url)
+        let decoder = JSONDecoder()
+        events = try decoder.decode([RecordedEvent].self, from: data)
     }
 }

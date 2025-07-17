@@ -5,27 +5,32 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let recorder = EventRecorder()
     let hotkeyManager = HotkeyManager.shared
     var window: NSWindow!
+    var loopCount: Int = 1
     
     func applicationDidFinishLaunching(_ notification: Notification) {
-        // Ensure proper app activation
         NSApp.setActivationPolicy(.regular)
         NSApp.activate(ignoringOtherApps: true)
         
-        // Hotkey setup
+        let contentView = ContentView(onLoopCountChange: { [weak self] newCount in
+            self?.loopCount = newCount
+        })
+        
         hotkeyManager.onToggleRecord = { [weak self] in
             guard let self = self else { return }
-            self.recorder.isRecording ? self.recorder.stop() : self.recorder.start()
+            DispatchQueue.main.async {
+                self.recorder.isRecording ? self.recorder.stop() : self.recorder.start()
+            }
         }
         
         hotkeyManager.onTogglePlayback = { [weak self] in
-            self?.recorder.playback(loopCount: 1)
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.recorder.playback(loopCount: self.loopCount)
+            }
         }
         
         hotkeyManager.startMonitoring()
         print("🚀 Hotkeys ready: ^⌘⌘R = record, ^⌘⌘P = playback")
-        
-        // Window creation
-        let contentView = ContentView().environmentObject(recorder)
         
         window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 360, height: 350),
@@ -33,10 +38,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             backing: .buffered,
             defer: false
         )
-        
         window.center()
         window.title = "Macorder"
-        window.contentView = NSHostingView(rootView: contentView)
+        window.contentView = NSHostingView(rootView: contentView.environmentObject(recorder))
         window.isReleasedWhenClosed = false
         window.makeKeyAndOrderFront(nil)
     }

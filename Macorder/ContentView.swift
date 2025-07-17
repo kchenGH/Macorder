@@ -2,26 +2,26 @@ import SwiftUI
 import AppKit
 
 struct ContentView: View {
-    @State private var isRecording = false
     @State private var loopCountText = "1"
     @State private var alwaysOnTop = false
     @EnvironmentObject var recorder: EventRecorder
-
+    var onLoopCountChange: (Int) -> Void
+    
     var body: some View {
         VStack(spacing: 16) {
-            Text("🎬 Macorder").font(.largeTitle)
+            Text("🎬🎬 Macorder").font(.largeTitle)
 
             HStack(spacing: 8) {
-                Button(isRecording ? "Stop Recording (^⌘R)" : "Start Recording (^⌘R)") {
-                    isRecording.toggle()
-                    isRecording ? recorder.start() : recorder.stop()
+                Button(recorder.isRecording ? "Stop Recording (^⌘⌘R)" : "Start Recording (^⌘⌘R)") {
+                    recorder.isRecording ? recorder.stop() : recorder.start()
                 }
                 .keyboardShortcut("r", modifiers: [.control, .command])
             }
 
             HStack(spacing: 8) {
-                Button("Playback (^⌘P)") {
+                Button("Playback (^⌘⌘P)") {
                     let loopCount = Int(loopCountText) ?? 1
+                    onLoopCountChange(loopCount)
                     recorder.playback(loopCount: max(1, loopCount))
                 }
                 .keyboardShortcut("p", modifiers: [.control, .command])
@@ -33,7 +33,11 @@ struct ContentView: View {
                     .frame(width: 50)
                     .multilineTextAlignment(.center)
                     .onChange(of: loopCountText) { newValue in
-                        loopCountText = newValue.filter { "0123456789".contains($0) }
+                        let filtered = newValue.filter { "0123456789".contains($0) }
+                        loopCountText = filtered
+                        if let count = Int(filtered) {
+                            onLoopCountChange(count)
+                        }
                     }
             }
 
