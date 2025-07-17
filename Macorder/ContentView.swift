@@ -9,17 +9,17 @@ struct ContentView: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            Text("🎬🎬 Macorder").font(.largeTitle)
+            Text("🎬 Macorder").font(.largeTitle)
 
             HStack(spacing: 8) {
-                Button(recorder.isRecording ? "Stop Recording (^⌘⌘R)" : "Start Recording (^⌘⌘R)") {
+                Button(recorder.isRecording ? "Stop Recording (^⌘R)" : "Start Recording (^⌘R)") {
                     recorder.isRecording ? recorder.stop() : recorder.start()
                 }
                 .keyboardShortcut("r", modifiers: [.control, .command])
             }
 
             HStack(spacing: 8) {
-                Button("Playback (^⌘⌘P)") {
+                Button("Playback (^⌘P)") {
                     let loopCount = Int(loopCountText) ?? 1
                     onLoopCountChange(loopCount)
                     recorder.playback(loopCount: max(1, loopCount))
